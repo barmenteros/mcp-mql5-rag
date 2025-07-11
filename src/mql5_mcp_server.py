@@ -21,13 +21,11 @@ import httpx
 import yaml
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
+from mcp.server.models import InitializationOptions
 from mcp.types import (
-    CallToolRequest,
-    CallToolResult,
-    ListToolsRequest,
-    ListToolsResult,
     Tool,
     TextContent,
+    ServerCapabilities,
 )
 from pydantic import BaseModel, Field
 
@@ -94,6 +92,7 @@ class MQL5MCPServer:
         # Initialize MCP server
         self.server = Server("mql5-rag-server")
         self._setup_tools()
+        self._setup_handlers()
         
         logger.info("MQL5 MCP Server initialized successfully")
     
@@ -192,6 +191,18 @@ class MQL5MCPServer:
     def get_available_tools(self) -> List[Dict[str, Any]]:
         """Get list of available tools for testing purposes."""
         return getattr(self, '_available_tools', [])
+    
+    def _setup_handlers(self):
+        """Set up additional MCP handlers."""
+        
+        @self.server.set_logging_level()
+        async def set_logging_level(level: str) -> None:
+            """Handle logging level changes from client."""
+            logger.info(f"Setting logging level to: {level}")
+            # Convert string level to logging constant
+            numeric_level = getattr(logging, level.upper(), logging.INFO)
+            logging.getLogger().setLevel(numeric_level)
+            logger.setLevel(numeric_level)
     
     async def _search_mql5_docs(self, query: str) -> List[TextContent]:
         """
@@ -360,48 +371,75 @@ class MQL5MCPServer:
         """Run the MCP server."""
         try:
             async with stdio_server() as (read_stream, write_stream):
-                await self.server.run(read_stream, write_stream)
+                logger.info("MCP server starting with stdio transport")
+                
+                # Define InitializationOptions for the server
+                # Using details from pyproject.toml and tool description
+                init_options = InitializationOptions(
+                    server_name="mql5-rag-server",
+                    server_version="0.1.0",
+                    capabilities=self.server.get_capabilities(),
+                    instructions="Search official MQL5 documentation for functions, syntax, examples, and best practices"
+                )
+                
+                logger.info(f"Starting MCP server with capabilities: {init_options.capabilities}")
+                await self.server.run(read_stream, write_stream, init_options)
+                
         except Exception as e:
-            logger.error(f"Server error: {e}")
+            logger.error(f"Server error: {e}", exc_info=True)
+            # Print to stderr so Claude Desktop can see the error
+            print(f"MCP Server Error: {e}", file=sys.stderr)
             raise
         finally:
             # Cleanup
             if self.http_client:
                 await self.http_client.aclose()
+                logger.info("HTTP client closed")
+            logger.info("MCP server shutdown complete")
 
 
 def main():
     """Main entry point for the MQL5 MCP Server."""
+    # Add debug output to stderr for Claude Desktop logs
+    print("MQL5 MCP Server starting...", file=sys.stderr)
+    
     # Check if running in proper MCP context
     if sys.stdin.isatty():
-        print("⚠️  MQL5 MCP Server")
-        print("=" * 30)
-        print("This server is designed to be launched by Claude Desktop via MCP protocol.")
-        print("Running directly from command line will result in stdio errors.")
-        print("")
-        print("To test the server, run:")
-        print("  uv run python test_server.py")
-        print("")
-        print("To use with Claude Desktop:")
-        print("  1. Configure claude_desktop_config.json")
-        print("  2. Launch Claude Desktop")
-        print("  3. Server will be automatically started")
-        print("")
-        print("Proceeding anyway (expect stdio errors)...")
-        print("")
+        print("⚠️  MQL5 MCP Server", file=sys.stderr)
+        print("=" * 30, file=sys.stderr)
+        print("This server is designed to be launched by Claude Desktop via MCP protocol.", file=sys.stderr)
+        print("Running directly from command line will result in stdio errors.", file=sys.stderr)
+        print("", file=sys.stderr)
+        print("To test the server, run:", file=sys.stderr)
+        print("  uv run python test_server.py", file=sys.stderr)
+        print("", file=sys.stderr)
+        print("To use with Claude Desktop:", file=sys.stderr)
+        print("  1. Configure claude_desktop_config.json", file=sys.stderr)
+        print("  2. Launch Claude Desktop", file=sys.stderr)
+        print("  3. Server will be automatically started", file=sys.stderr)
+        print("", file=sys.stderr)
+        print("Proceeding anyway (expect stdio errors)...", file=sys.stderr)
+        print("", file=sys.stderr)
+    else:
+        print("MCP Server running in stdio mode...", file=sys.stderr)
     
     try:
+        print("Initializing MQL5 MCP Server...", file=sys.stderr)
         server = MQL5MCPServer()
+        print("Server initialized, starting async loop...", file=sys.stderr)
         asyncio.run(server.run())
     except KeyboardInterrupt:
+        print("Server shutdown requested", file=sys.stderr)
         logger.info("Server shutdown requested")
     except Exception as e:
+        error_msg = f"Failed to start server: {e}"
+        print(error_msg, file=sys.stderr)
+        logger.error(error_msg, exc_info=True)
         if "TaskGroup" in str(e) and sys.stdin.isatty():
             logger.info("Expected error: MCP server requires stdio connection from Claude Desktop")
-            print("\n✅ Server validation successful!")
-            print("The 'TaskGroup' error is expected when running without MCP stdio connection.")
+            print("\n✅ Server validation successful!", file=sys.stderr)
+            print("The 'TaskGroup' error is expected when running without MCP stdio connection.", file=sys.stderr)
         else:
-            logger.error(f"Failed to start server: {e}")
             sys.exit(1)
 
 
