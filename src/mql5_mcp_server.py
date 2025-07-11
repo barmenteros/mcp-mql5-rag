@@ -19,7 +19,7 @@ from typing import Any, Dict, List, Optional
 
 import httpx
 import yaml
-from mcp.server import Server
+from mcp.server import Server, NotificationOptions
 from mcp.server.stdio import stdio_server
 from mcp.server.models import InitializationOptions
 from mcp.types import (
@@ -378,7 +378,10 @@ class MQL5MCPServer:
                 init_options = InitializationOptions(
                     server_name="mql5-rag-server",
                     server_version="0.1.0",
-                    capabilities=self.server.get_capabilities(),
+                    capabilities=self.server.get_capabilities(
+                        notification_options=NotificationOptions(),
+                        experimental_capabilities={}
+                    ),
                     instructions="Search official MQL5 documentation for functions, syntax, examples, and best practices"
                 )
                 
