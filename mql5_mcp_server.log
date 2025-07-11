@@ -1,0 +1,31 @@
+2025-07-11 17:26:29,175 - __main__ - INFO - Configuration loaded from config.yaml
+2025-07-11 17:26:29,175 - __main__ - ERROR - Failed to start server: API key not found in environment variable: MQL5_RAG_API_KEY
+2025-07-11 17:27:31,827 - __main__ - INFO - Configuration loaded from config.yaml
+2025-07-11 17:27:31,827 - __main__ - INFO - MQL5 MCP Server initialized successfully
+2025-07-11 17:27:31,859 - __main__ - ERROR - Server error: unhandled errors in a TaskGroup (1 sub-exception)
+2025-07-11 17:27:31,859 - __main__ - ERROR - Failed to start server: unhandled errors in a TaskGroup (1 sub-exception)
+2025-07-11 17:33:48,859 - mql5_mcp_server - INFO - Configuration loaded from config.yaml
+2025-07-11 17:33:48,859 - mql5_mcp_server - INFO - MQL5 MCP Server initialized successfully
+2025-07-11 17:36:50,880 - mql5_mcp_server - INFO - Configuration loaded from config.yaml
+2025-07-11 17:36:50,880 - mql5_mcp_server - INFO - MQL5 MCP Server initialized successfully
+2025-07-11 17:36:51,026 - mql5_mcp_server - INFO - Searching MQL5 docs for query: ArrayResize
+2025-07-11 17:36:52,185 - httpx - INFO - HTTP Request: POST https://b6qmhutxnc.execute-api.us-east-1.amazonaws.com/prod/rag "HTTP/1.1 200 OK"
+2025-07-11 17:36:52,186 - mql5_mcp_server - WARNING - Config file nonexistent.yaml not found, using defaults
+2025-07-11 17:36:52,187 - mql5_mcp_server - ERROR - Failed to load configuration: 1 validation error for ServerConfig
+aws_api_gateway_url
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2025-07-11 17:44:51,339 - mql5_mcp_server - INFO - Configuration loaded from config.yaml
+2025-07-11 17:44:51,339 - mql5_mcp_server - INFO - MQL5 MCP Server initialized successfully
+2025-07-11 17:44:51,387 - mql5_mcp_server - INFO - Searching MQL5 docs for query: ArrayResize
+2025-07-11 17:44:52,641 - httpx - INFO - HTTP Request: POST https://b6qmhutxnc.execute-api.us-east-1.amazonaws.com/prod/rag "HTTP/1.1 200 OK"
+2025-07-11 17:44:52,656 - mql5_mcp_server - WARNING - Config file nonexistent.yaml not found, using defaults
+2025-07-11 17:44:52,656 - mql5_mcp_server - INFO - MQL5 MCP Server initialized successfully
+2025-07-11 18:10:35,551 - __main__ - INFO - Configuration loaded from config.yaml
+2025-07-11 18:10:35,551 - __main__ - INFO - MQL5 MCP Server initialized successfully
+2025-07-11 18:10:35,564 - __main__ - ERROR - Server error: unhandled errors in a TaskGroup (1 sub-exception)
+2025-07-11 18:10:35,564 - __main__ - ERROR - Failed to start server: unhandled errors in a TaskGroup (1 sub-exception)
+2025-07-11 18:11:08,884 - __main__ - INFO - Configuration loaded from config.yaml
+2025-07-11 18:11:08,884 - __main__ - INFO - MQL5 MCP Server initialized successfully
+2025-07-11 18:11:08,890 - __main__ - ERROR - Server error: unhandled errors in a TaskGroup (1 sub-exception)
+2025-07-11 18:11:08,890 - __main__ - ERROR - Failed to start server: unhandled errors in a TaskGroup (1 sub-exception)

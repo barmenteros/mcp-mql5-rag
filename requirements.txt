@@ -1,0 +1,23 @@
+# MQL5 MCP Server Dependencies
+#
+# Core dependencies for the MQL5 documentation RAG MCP server
+# These are managed by uv and pyproject.toml, but included for compatibility
+
+# MCP (Model Context Protocol) SDK
+mcp>=1.0.0
+
+# HTTP client for AWS API Gateway communication
+httpx>=0.25.0
+
+# YAML configuration file parsing
+pyyaml>=6.0
+
+# Data validation and parsing
+pydantic>=2.0.0
+
+# Development dependencies (optional, install with: uv add --dev)
+# pytest>=7.0.0
+# pytest-asyncio>=0.21.0
+# pyright>=1.1.0
+# ruff>=0.1.0
+# black>=23.0.0

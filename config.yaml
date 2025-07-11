@@ -1,0 +1,35 @@
+# MQL5 MCP Server Configuration
+# 
+# This configuration file defines the settings for the MQL5 documentation
+# RAG (Retrieval-Augmented Generation) MCP server.
+
+# AWS API Gateway Configuration
+# Replace with your actual API Gateway URL once deployed
+aws_api_gateway_url: "https://b6qmhutxnc.execute-api.us-east-1.amazonaws.com/prod/rag"
+
+# API Key Configuration
+# The API key should be stored in an environment variable for security
+# Default environment variable name: MQL5_RAG_API_KEY
+api_key_env_var: "MQL5_RAG_API_KEY"
+
+# HTTP Request Configuration
+timeout_seconds: 2  # Request timeout for AWS API calls
+
+# RAG Configuration
+max_snippets: 5  # Maximum number of documentation snippets to retrieve
+
+# Circuit Breaker Configuration
+# Prevents cascading failures when AWS services are unavailable
+circuit_breaker_failures: 3    # Number of consecutive failures before opening
+circuit_breaker_cooldown: 300  # Cooldown period in seconds (5 minutes)
+
+# Logging Configuration (optional - can be overridden in code)
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+# Development/Debug Configuration
+debug:
+  enabled: false
+  log_requests: false
+  log_responses: false

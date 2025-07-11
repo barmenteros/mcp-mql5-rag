@@ -1,0 +1,143 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-mql5-rag"
+version = "0.1.0"
+description = "MCP Server for MQL5 documentation RAG (Retrieval-Augmented Generation)"
+authors = [
+    {name = "MQL5 RAG Team", email = "support.team@barmenteros.com"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Documentation",
+    "Topic :: Text Processing",
+]
+keywords = ["mcp", "mql5", "rag", "documentation", "claude"]
+
+dependencies = [
+    "mcp>=1.0.0",
+    "httpx>=0.25.0",
+    "pyyaml>=6.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pyright>=1.1.0",
+    "ruff>=0.1.0",
+    "black>=23.0.0"
+]
+test = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.10.0",
+    "httpx[testing]>=0.25.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/mql5-rag/mcp-mql5-rag"
+Repository = "https://github.com/mql5-rag/mcp-mql5-rag.git"
+Issues = "https://github.com/mql5-rag/mcp-mql5-rag/issues"
+
+[project.scripts]
+mql5-mcp-server = "mql5_mcp_server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mql5_mcp_server.py"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/config.yaml",
+    "/README.md",
+    "/LICENSE"
+]
+
+[tool.pyright]
+include = ["src"]
+exclude = [".venv", "build", "dist"]
+pythonVersion = "3.10"
+pythonPlatform = "All"
+typeCheckingMode = "strict"
+reportMissingImports = true
+reportMissingTypeStubs = false
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by black
+]
+
+[tool.ruff.isort]
+known-first-party = ["mql5_mcp_server"]
+
+[tool.black]
+target-version = ['py310']
+line-length = 88
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = [
+    "tests",
+]
+python_files = [
+    "test_*.py",
+    "*_test.py",
+]
+python_classes = [
+    "Test*",
+]
+python_functions = [
+    "test_*",
+]
+asyncio_mode = "auto"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "pyright>=1.1.403",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.0.0",
+    "pytest-mock>=3.14.1",
+    "ruff>=0.12.3",
+]

@@ -1,0 +1,4 @@
+2025-07-11 17:57:00,179 - __main__ - WARNING - Config file config.yaml not found, using defaults
+2025-07-11 17:57:00,179 - __main__ - INFO - MQL5 MCP Server initialized successfully
+2025-07-11 17:57:00,179 - __main__ - ERROR - Server error: unhandled errors in a TaskGroup (1 sub-exception)
+2025-07-11 17:57:00,179 - __main__ - INFO - Expected error: MCP server requires stdio connection from Claude Desktop
